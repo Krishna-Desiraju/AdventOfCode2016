@@ -1,11 +1,6 @@
 defmodule CoOrdinateFinder do
-  def parse_command(instruction) do
-    left_or_right = instruction |> String.slice(0,1)
-    magnitude = instruction |> String.slice(1, String.length(instruction))
-    %{:left_or_right => left_or_right |> String.to_atom, :magnitude => magnitude |> String.to_integer}
-  end
-
-  def move(%{:left_or_right => left_or_right, :magnitude => magnitude} = _elem, %{:x => x, :y => y, :direction => current_direction, :cmd_no => cmd_no, :steps => _steps} = _acc) do
+  def move( %{:left_or_right => left_or_right, :magnitude => magnitude} = _elem, 
+            %{:x => x, :y => y, :direction => current_direction, :cmd_no => cmd_no, :steps => _steps} = _acc) do
     directions = %{
         {:N, :R} => :E,
         {:N, :L} => :W,
@@ -38,6 +33,12 @@ defmodule CoOrdinateFinder do
       :direction => next_direction,
       :cmd_no => cmd_no + 1,
       :steps => one_step_moves}
+  end
+
+  def parse_command(instruction) do
+    left_or_right = instruction |> String.slice(0,1)
+    magnitude = instruction |> String.slice(1, String.length(instruction))
+    %{:left_or_right => left_or_right |> String.to_atom, :magnitude => magnitude |> String.to_integer}
   end
 
   def parse_commands(command_string) do
