@@ -25,9 +25,19 @@ defmodule CoOrdinateFinder do
       }
 
     next_direction = directions[{current_direction, left_or_right}]
+
     %{dx: dx, dy: dy} = co_ordinates[next_direction]
-    next_steps = 1..magnitude |> Enum.to_list |> Enum.scan(%{:x => x, :y => y}, fn(_elem, %{:x => a, :y => b}) -> %{:x => a + dx, :y => b + dy} end)
-    %{:x => x + (dx * magnitude), :y => y + (dy * magnitude), :direction => next_direction, :cmd_no => cmd_no + 1, :steps => next_steps}
+
+    one_step_moves =
+      1..magnitude
+      |> Enum.to_list
+      |> Enum.scan(%{:x => x, :y => y}, fn(_elem, %{:x => a, :y => b}) -> %{:x => a + dx, :y => b + dy} end)
+
+    %{:x => x + (dx * magnitude),
+      :y => y + (dy * magnitude),
+      :direction => next_direction,
+      :cmd_no => cmd_no + 1,
+      :steps => one_step_moves}
   end
 
   def parse_commands(command_string) do
