@@ -45,14 +45,14 @@ defmodule KeyFinder do
     movement_map[movement]
   end
 
-  def parse_line(line, %{:x => a, :y => b} = _start_position, %{keypad_type: keypad_type}) do
+  def parse_line(line, %{:x => _a, :y => _b} = start_position, %{keypad_type: keypad_type}) do
     line
     |> String.replace(" ", "")
     |> String.upcase
     |> String.graphemes
     |> Enum.map(fn x -> x |> String.to_atom() end)
     |> Enum.map(fn x -> map_moves_to_co_ordinates(%{:movement => x}) end)
-    |> Enum.reduce(%{:x => a, :y => b}, fn(elem, acc) -> move(elem, acc, %{keypad_type: keypad_type}) end)
+    |> Enum.reduce(start_position, fn(elem, acc) -> move(elem, acc, %{keypad_type: keypad_type}) end)
   end
 
   def parse_lines(%{filetext: lines, keypad_type: keypad_type, start_position: %{:x => x1, :y => y1}}) do
